@@ -38,5 +38,8 @@
         "tsup": "^7.1.0",
         "tsx": "^3.12.7",
         "typescript": "^5.0.4"
+    },
+    "dependencies": {
+        "@esliph/util": "^1.0.1-9.21"
     }
 }
