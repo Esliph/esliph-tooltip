@@ -10,15 +10,14 @@ function App() {
         content: TOOLTIP_CONTENT,
         options: {
             selectorElementTarget: SELECTOR_ELEMENT_BUTTON,
-            styles: {
-                gapBetweenElementTargetAndElementTooltipIfTypeFixed: {
-                    right: 50
-                }
-            }
         }
     })
 
     console.log(tooltip)
+
+    document.querySelector('button[name="button-active"]')?.addEventListener("click", () => {
+        tooltip.setActive(!tooltip.isActive())
+    })
 }
 
 window.onload = App

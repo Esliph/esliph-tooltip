@@ -9,13 +9,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 button {
     cursor: pointer;
 }
 
-button[name="button"] {
+button {
     font-size: 16px;
     padding: 10px 20px;
 }
@@ -24,12 +25,12 @@ button[name="button"] {
     background-color: #dadada;
     padding: 20px 25px;
     border-radius: 10px;
-    transition: opacity .3s;
-    animation: slide .3s ease-out;
+    transition: opacity 0.3s;
 }
 
 .tooltip-right.tooltip-enable {
     margin-left: 25px;
+    animation: slide 0.3s ease-out;
 }
 
 @keyframes slide {

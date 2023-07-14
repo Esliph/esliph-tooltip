@@ -1,5 +1,13 @@
 import { ElementContentType, ElementTargetType, ElementTooltipType, EnumTooltipDirections, PartialObjet, TooltipDirections, TooltipOptions } from './model.js'
-import { DEFAULT_TOOLTIP_OPTIONS, ElementTargetStylesDefault, ElementTargetStylesIfTypeFixedDefault, TooltipStylesDefault, TooltipStylesDisable, TooltipStylesEnable, TooltipStylesFixed } from './global.js'
+import {
+    DEFAULT_TOOLTIP_OPTIONS,
+    ElementTargetStylesDefault,
+    ElementTargetStylesIfTypeFixedDefault,
+    TooltipStylesDefault,
+    TooltipStylesDisable,
+    TooltipStylesEnable,
+    TooltipStylesFixed,
+} from './global.js'
 import { ObserverTooltip } from './observer.js'
 
 export class Tooltip extends ObserverTooltip {
@@ -7,7 +15,7 @@ export class Tooltip extends ObserverTooltip {
     private elementTooltip: ElementTooltipType
     private options: TooltipOptions
     private content: ElementContentType
-    private state: { isEnable: boolean }
+    private state: { active: boolean; enable: boolean }
 
     private constructor(elementTarget: ElementTargetType, content: ElementContentType, options?: PartialObjet<TooltipOptions>) {
         super()
@@ -17,7 +25,10 @@ export class Tooltip extends ObserverTooltip {
         this.content = content
         // @ts-expect-error
         this.options = Tooltip.mergeOptions(options)
-        this.state = { isEnable: false }
+        this.state = {
+            active: true,
+            enable: false,
+        }
     }
 
     public static create(args: { content: ElementContentType | string | Node; options?: PartialObjet<TooltipOptions> }) {
@@ -47,8 +58,12 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private static getElementTarget(selectorElementTarget: string | HTMLElement | Element) {
-        if (!selectorElementTarget) { return null }
-        if (selectorElementTarget instanceof HTMLElement || selectorElementTarget instanceof Element) { return selectorElementTarget as HTMLElement }
+        if (!selectorElementTarget) {
+            return null
+        }
+        if (selectorElementTarget instanceof HTMLElement || selectorElementTarget instanceof Element) {
+            return selectorElementTarget as HTMLElement
+        }
 
         const elementTarget = document.querySelector(selectorElementTarget || '')
 
@@ -62,7 +77,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private setupElementTarget() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         Tooltip.setStylesInElement(this.elementTarget, ElementTargetStylesDefault)
 
@@ -91,17 +108,25 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEvents() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
-        document.addEventListener('mousemove', (ev) => this.mouseMouseInElementTarget(ev))
+        document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
     private hoverInElement() {
+        if (!this.state.active) {
+            return
+        }
+
         this.toggleTooltip(true)
 
-        if (this.isTypeFloating()) { return }
+        if (this.isTypeFloating()) {
+            return
+        }
 
         this.updatePositionTooltipIfFixed()
     }
@@ -111,7 +136,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private mouseMouseInElementTarget(ev: MouseEvent) {
-        if (!this.validFloatTooltip()) { return }
+        if (!this.validFloatTooltip()) {
+            return
+        }
 
         const { x, y } = this.getNewPositionTooltipTypeFloating(ev)
 
@@ -119,7 +146,7 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private validFloatTooltip() {
-        return this.state.isEnable && this.isTypeFloating()
+        return this.state.enable && this.isTypeFloating()
     }
 
     private updatePositionTooltipIfFixed() {
@@ -127,7 +154,9 @@ export class Tooltip extends ObserverTooltip {
 
         const stylesByDirectionTooltip = TooltipStylesFixed[newDirectionTooltip]
 
-        if (!stylesByDirectionTooltip) { return }
+        if (!stylesByDirectionTooltip) {
+            return
+        }
 
         Tooltip.setStylesInElement(this.elementTooltip, stylesByDirectionTooltip)
 
@@ -137,12 +166,16 @@ export class Tooltip extends ObserverTooltip {
     private updateTooltipClassDirection(newDirection: EnumTooltipDirections) {
         const newClassDirection = this.getFullOptions().classDirectionTooltip[newDirection]
 
-        if (!newClassDirection) { return }
+        if (!newClassDirection) {
+            return
+        }
 
         for (const directionName in TooltipDirections) {
             const classDirection = this.getFullOptions().classDirectionTooltip[directionName as EnumTooltipDirections]
 
-            if (!classDirection) { continue }
+            if (!classDirection) {
+                continue
+            }
 
             this.elementTooltip.classList.remove(classDirection)
         }
@@ -160,7 +193,7 @@ export class Tooltip extends ObserverTooltip {
 
         return {
             x: pageY + this.getFullOptions().styles.gapMouseTooltipTypeFloatingInPx,
-            y: pageX + this.getFullOptions().styles.gapMouseTooltipTypeFloatingInPx
+            y: pageX + this.getFullOptions().styles.gapMouseTooltipTypeFloatingInPx,
         }
     }
 
@@ -181,17 +214,17 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private toggleTooltipState(forceState?: boolean) {
-        if (typeof forceState != 'undefined') this.state.isEnable = forceState
-        else this.state.isEnable = !this.state.isEnable
+        if (typeof forceState != 'undefined') this.state.enable = forceState
+        else this.state.enable = !this.state.enable
     }
 
     private toggleTooltipClass() {
-        this.elementTooltip.classList.toggle(this.getFullOptions().classEnable, this.state.isEnable)
-        this.elementTooltip.classList.toggle(this.getFullOptions().classDisable, !this.state.isEnable)
+        this.elementTooltip.classList.toggle(this.getFullOptions().classEnable, this.state.enable)
+        this.elementTooltip.classList.toggle(this.getFullOptions().classDisable, !this.state.enable)
     }
 
     private toggleTooltipStyles() {
-        if (this.state.isEnable) this.showTooltipStyles()
+        if (this.state.enable) this.showTooltipStyles()
         else this.hiddenTooltipStyles()
     }
 
@@ -216,6 +249,14 @@ export class Tooltip extends ObserverTooltip {
 
     private getFullOptions() {
         return { ...Tooltip.getDefaultOptions(), ...this.options }
+    }
+
+    public setActive(value: boolean) {
+        this.state.active = value
+    }
+
+    public isActive() {
+        return this.state.active
     }
 
     public getOptions() {
