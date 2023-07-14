@@ -19,3 +19,13 @@ button[name="button"] {
     font-size: 16px;
     padding: 10px 20px;
 }
+
+.tooltip {
+    background-color: #dadada;
+    padding: 20px 25px;
+    border-radius: 10px;
+}
+
+.tooltip-right {
+    margin-left: 15px;
+}
