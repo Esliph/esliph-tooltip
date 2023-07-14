@@ -7,9 +7,9 @@ function App() {
     const TOOLTIP_CONTENT = 'Hello World'
 
     const tooltip = Tooltip.create({
-        content: 'Hello World',
+        content: TOOLTIP_CONTENT,
         options: {
-            selectorElementTarget: 'button[name="button"]',
+            selectorElementTarget: SELECTOR_ELEMENT_BUTTON,
             styles: {
                 gapBetweenElementTargetAndElementTooltipIfTypeFixed: {
                     right: 50

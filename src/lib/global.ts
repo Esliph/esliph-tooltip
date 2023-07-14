@@ -36,11 +36,9 @@ export const TooltipStylesDefault: TooltipStyles = {
 }
 export const TooltipStylesDisable: TooltipStyles = {
     display: 'none',
-    opacity: '0',
 }
 export const TooltipStylesEnable: TooltipStyles = {
     display: 'block',
-    opacity: '1',
 }
 export const TooltipStylesFixed: { [x in EnumTooltipDirections]: TooltipStyles } = {
     bottom: {

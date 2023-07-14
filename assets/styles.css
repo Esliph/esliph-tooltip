@@ -24,8 +24,19 @@ button[name="button"] {
     background-color: #dadada;
     padding: 20px 25px;
     border-radius: 10px;
+    transition: opacity .3s;
+    animation: slide .3s ease-out;
 }
 
-.tooltip-right {
-    margin-left: 15px;
+.tooltip-right.tooltip-enable {
+    margin-left: 25px;
+}
+
+@keyframes slide {
+    to {
+        margin-left: 25px;
+    }
+    from {
+        margin-left: 10px;
+    }
 }

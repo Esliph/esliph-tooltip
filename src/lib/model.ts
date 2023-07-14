@@ -1,4 +1,4 @@
-export type PartialObjet<Obj> = Obj extends object ? PartialObjet<Obj> : Partial<Obj>
+export type PartialObjet<Obj> = Obj extends object ? { [PropName in keyof Obj]?: Obj[PropName] extends object ? PartialObjet<Obj[PropName]> : Obj[PropName] } : Obj
 
 export const TooltipTypePosition = {
     'float': 'float',

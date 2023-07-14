@@ -15,6 +15,7 @@ export class Tooltip extends ObserverTooltip {
         // @ts-expect-error
         this.elementTooltip = null
         this.content = content
+        // @ts-expect-error
         this.options = Tooltip.mergeOptions(options)
         this.state = { isEnable: false }
     }
@@ -38,7 +39,7 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private static getDefaultOptions() {
-        return { ...DEFAULT_TOOLTIP_OPTIONS }
+        return { ...DEFAULT_TOOLTIP_OPTIONS } as TooltipOptions
     }
 
     private static mergeOptions(options?: PartialObjet<TooltipOptions>) {
