@@ -112,17 +112,39 @@ export class Tooltip extends ObserverTooltip {
             return
         }
 
+        if (this.options.typeEnable == 'hover') {
+            this.initEventsTooltipTypeHover()
+        } else {
+            this.initEventsTooltipTypeClick()
+        }
+    }
+
+    private initEventsTooltipTypeHover() {
         this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
+    private initEventsTooltipTypeClick() {
+        this.elementTarget.addEventListener('mousedown', () => this.clickElement())
+        this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
+        document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
+    }
+
+    private clickElement() {
+        this.performToogleTooltip()
+    }
+
     private hoverInElement() {
+        this.performToogleTooltip(true)
+    }
+
+    private performToogleTooltip(forceState?: boolean) {
         if (!this.state.active) {
             return
         }
 
-        this.toggleTooltip(true)
+        this.toggleTooltip(forceState)
 
         if (this.isTypeFloating()) {
             return
@@ -243,6 +265,11 @@ export class Tooltip extends ObserverTooltip {
         }
     }
 
+    private removeElementTooltip() {
+        this.elementTooltip.remove()
+        this.elementTooltip = null
+    }
+
     public isTypeFloating() {
         return this.getFullOptions().typePosition == 'float'
     }
@@ -261,6 +288,19 @@ export class Tooltip extends ObserverTooltip {
 
     public getOptions() {
         return { ...this.options }
+    }
+
+    public updateOptions(options: PartialObjet<TooltipOptions>) {
+        this.setOptions({
+            ...this.getFullOptions(),
+            ...options,
+        })
+        this.removeElementTooltip()
+        this.initComponents()
+    }
+
+    private setOptions(options: TooltipOptions) {
+        this.options = options
     }
 
     public getElementTarget() {

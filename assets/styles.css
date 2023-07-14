@@ -26,6 +26,7 @@ button {
     padding: 20px 25px;
     border-radius: 10px;
     transition: opacity 0.3s;
+    white-space: nowrap;
 }
 
 .tooltip-right.tooltip-enable {
