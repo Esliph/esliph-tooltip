@@ -3,6 +3,7 @@ import { EnumTooltipDirections, TooltipOptions, TooltipStyles } from './model.js
 export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     typeEnable: 'hover',
     typePosition: 'fixed',
+    fixedPosition: null,
     classEnable: 'tooltip-enable',
     classDisable: 'tooltip-disable',
     classPrefixPosition: 'tooltip-position',
@@ -17,12 +18,6 @@ export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     },
     styles: {
         gapMouseTooltipTypeFloatingInPx: 15,
-        gapBetweenElementTargetAndElementTooltipIfTypeFixed: {
-            bottom: 15,
-            left: 15,
-            right: 15,
-            top: 15,
-        },
     },
 }
 

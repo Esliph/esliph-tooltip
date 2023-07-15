@@ -240,6 +240,10 @@ export class Tooltip extends ObserverTooltip {
             throw new Error('Element target tooltip not found')
         }
 
+        if (this.getFullOptions().fixedPosition) {
+            return this.getFullOptions().fixedPosition as EnumTooltipDirections
+        }
+
         const direction: EnumTooltipDirections = 'right'
 
         console.log(direction)
@@ -310,8 +314,7 @@ export class Tooltip extends ObserverTooltip {
     }
 
     public updateOptions(options: PartialObjet<TooltipOptions>) {
-        // @ts-expect-error
-        this.setOptions({ ...this.getFullOptions(), ...options })
+        this.setOptions({ ...this.getFullOptions(), ...options } as TooltipOptions)
         this.removeElementTooltip()
         this.initComponents()
     }
