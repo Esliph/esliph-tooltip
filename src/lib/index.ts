@@ -1,4 +1,12 @@
-import { ElementContentType, ElementTargetType, ElementTooltipType, EnumTooltipDirections, PartialObjet, TooltipDirections, TooltipOptions } from './model.js'
+import {
+    ElementContentType,
+    ElementTargetType,
+    ElementTooltipType,
+    EnumTooltipDirections,
+    PartialObjet,
+    TooltipDirections,
+    TooltipOptions
+} from './model.js'
 import {
     DEFAULT_TOOLTIP_OPTIONS,
     ElementTargetStylesDefault,
@@ -120,26 +128,34 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEventsTooltipTypeHover() {
+        if (!this.elementTarget) {
+            return
+        }
+
         this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
     private initEventsTooltipTypeClick() {
+        if (!this.elementTarget) {
+            return
+        }
+
         this.elementTarget.addEventListener('mousedown', () => this.clickElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
     private clickElement() {
-        this.performToogleTooltip()
+        this.performToggleTooltip()
     }
 
     private hoverInElement() {
-        this.performToogleTooltip(true)
+        this.performToggleTooltip(true)
     }
 
-    private performToogleTooltip(forceState?: boolean) {
+    private performToggleTooltip(forceState?: boolean) {
         if (!this.state.active) {
             return
         }
@@ -226,6 +242,8 @@ export class Tooltip extends ObserverTooltip {
 
         const direction: EnumTooltipDirections = 'right'
 
+        console.log(direction)
+
         return direction
     }
 
@@ -267,6 +285,7 @@ export class Tooltip extends ObserverTooltip {
 
     private removeElementTooltip() {
         this.elementTooltip.remove()
+        // @ts-expect-error
         this.elementTooltip = null
     }
 
@@ -291,10 +310,8 @@ export class Tooltip extends ObserverTooltip {
     }
 
     public updateOptions(options: PartialObjet<TooltipOptions>) {
-        this.setOptions({
-            ...this.getFullOptions(),
-            ...options,
-        })
+        // @ts-expect-error
+        this.setOptions({ ...this.getFullOptions(), ...options })
         this.removeElementTooltip()
         this.initComponents()
     }

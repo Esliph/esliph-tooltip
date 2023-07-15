@@ -15,7 +15,7 @@ function App() {
 
     console.log(tooltip)
 
-    document.querySelector('button[name="button-active"]')?.addEventListener("click", () => {
+    document.querySelector('button[name="button-active"]')?.addEventListener('click', () => {
         tooltip.setActive(!tooltip.isActive())
     })
 }
