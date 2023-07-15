@@ -1,4 +1,6 @@
-export type PartialObjet<Obj> = Obj extends object ? { [PropName in keyof Obj]?: Obj[PropName] extends object ? PartialObjet<Obj[PropName]> : Obj[PropName] } : Obj
+export type PartialObjet<Obj> = Obj extends object
+    ? { [PropName in keyof Obj]?: Obj[PropName] extends object ? PartialObjet<Obj[PropName]> : Obj[PropName] }
+    : Obj
 
 export const TooltipTypePosition = {
     'float': 'float',
@@ -32,6 +34,7 @@ export type TooltipOptions = {
     selectorElementTarget: string | HTMLElement | Element
     typePosition: EnumTooltipTypePosition
     typeEnable: EnumTooltipTypeEnable
+    fixedPosition: EnumTooltipDirections | null
     classEnable: string
     classDisable: string
     classPosition: string
@@ -39,7 +42,6 @@ export type TooltipOptions = {
     classTooltip: string
     classDirectionTooltip: { [x in EnumTooltipDirections]: string }
     styles: {
-        gapMouseTooltipTypeFloatingInPx: number,
-        gapBetweenElementTargetAndElementTooltipIfTypeFixed: { [x in EnumTooltipDirections]: number }
+        gapMouseTooltipTypeFloatingInPx: number
     }
 }

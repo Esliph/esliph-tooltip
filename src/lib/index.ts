@@ -120,12 +120,20 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEventsTooltipTypeHover() {
+        if (!this.elementTarget) {
+            return
+        }
+
         this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
     private initEventsTooltipTypeClick() {
+        if (!this.elementTarget) {
+            return
+        }
+
         this.elementTarget.addEventListener('mousedown', () => this.clickElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
@@ -224,6 +232,10 @@ export class Tooltip extends ObserverTooltip {
             throw new Error('Element target tooltip not found')
         }
 
+        if (this.getFullOptions().fixedPosition) {
+            return this.getFullOptions().fixedPosition as EnumTooltipDirections
+        }
+
         const direction: EnumTooltipDirections = 'right'
 
         return direction
@@ -267,6 +279,7 @@ export class Tooltip extends ObserverTooltip {
 
     private removeElementTooltip() {
         this.elementTooltip.remove()
+        // @ts-expect-error
         this.elementTooltip = null
     }
 
@@ -294,7 +307,7 @@ export class Tooltip extends ObserverTooltip {
         this.setOptions({
             ...this.getFullOptions(),
             ...options,
-        })
+        } as TooltipOptions)
         this.removeElementTooltip()
         this.initComponents()
     }
