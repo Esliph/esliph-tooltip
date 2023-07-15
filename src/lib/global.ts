@@ -4,6 +4,7 @@ export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     typeEnable: 'hover',
     typePosition: 'fixed',
     fixedPosition: null,
+    defaultPosition: 'right',
     classEnable: 'tooltip-enable',
     classDisable: 'tooltip-disable',
     classPrefixPosition: 'tooltip-position',
@@ -28,9 +29,15 @@ export const ElementTargetStylesIfTypeFixedDefault: TooltipStyles = {
 export const TooltipStylesDefault: TooltipStyles = {
     position: 'absolute',
     zIndex: '1000',
+    pointerEvents: 'none'
 }
 export const TooltipStylesDisable: TooltipStyles = {
     display: 'none',
+    top: 'auto',
+    left: 'auto',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'none',
 }
 export const TooltipStylesEnable: TooltipStyles = {
     display: 'block',

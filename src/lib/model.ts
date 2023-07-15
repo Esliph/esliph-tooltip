@@ -23,8 +23,8 @@ export type ElementContentType = HTMLElement
 export type TooltipStyles = Partial<CSSStyleDeclaration>
 export const TooltipDirections = {
     'right': 'right',
-    'left': 'left',
     'top': 'top',
+    'left': 'left',
     'bottom': 'bottom',
 } as const
 
@@ -35,6 +35,7 @@ export type TooltipOptions = {
     typePosition: EnumTooltipTypePosition
     typeEnable: EnumTooltipTypeEnable
     fixedPosition: EnumTooltipDirections | null
+    defaultPosition: EnumTooltipDirections
     classEnable: string
     classDisable: string
     classPosition: string
@@ -44,4 +45,14 @@ export type TooltipOptions = {
     styles: {
         gapMouseTooltipTypeFloatingInPx: number
     }
+}
+
+export type DirectionFunctionValidArgs = {
+    positionElementTarget: { x: number, y: number },
+    widthElementTarget: number,
+    heightElementTarget: number,
+    widthElementTooltip: number,
+    heightElementTooltip: number,
+    widthWindow: number,
+    heightWindow: number
 }

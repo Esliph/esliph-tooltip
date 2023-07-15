@@ -28,17 +28,3 @@ button {
     transition: opacity 0.3s;
     white-space: nowrap;
 }
-
-.tooltip-right.tooltip-enable {
-    margin-left: 25px;
-    animation: slide 0.3s ease-out;
-}
-
-@keyframes slide {
-    to {
-        margin-left: 25px;
-    }
-    from {
-        margin-left: 10px;
-    }
-}
