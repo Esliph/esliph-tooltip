@@ -11,7 +11,7 @@ export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     classTooltip: 'tooltip',
     classPosition: '',
     selectorElementTarget: '',
-    delay: 0,
+    delay: 250,
     classDirectionTooltip: {
         bottom: 'tooltip-bottom',
         left: 'tooltip-left',

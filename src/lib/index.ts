@@ -24,7 +24,7 @@ export class Tooltip extends ObserverTooltip {
     private elementTooltip: ElementTooltipType
     private options: TooltipOptions
     private content: ElementContentType
-    private state: { active: boolean; enable: boolean }
+    private state: { active: boolean; enable: boolean; inDelay: boolean }
 
     private constructor(elementTarget: ElementTargetType, content: ElementContentType, options?: PartialObjet<TooltipOptions>) {
         super()
@@ -37,6 +37,7 @@ export class Tooltip extends ObserverTooltip {
         this.state = {
             active: true,
             enable: false,
+            inDelay: false,
         }
     }
 
@@ -133,7 +134,7 @@ export class Tooltip extends ObserverTooltip {
             return
         }
 
-        this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
+        this.elementTarget.addEventListener('mouseenter', () => this.clickOrHoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
@@ -143,34 +144,38 @@ export class Tooltip extends ObserverTooltip {
             return
         }
 
-        this.elementTarget.addEventListener('mousedown', () => this.clickElement())
+        this.elementTarget.addEventListener('mousedown', () => this.clickOrHoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
         document.addEventListener('mousemove', ev => this.mouseMouseInElementTarget(ev))
     }
 
-    private clickElement() {
-        setTimeout(() => this.performToggleTooltip(), this.getFullOptions().delay)
+    private clickOrHoverInElement() {
+        this.performActiveTooltip()
     }
 
-    private hoverInElement() {
-        setTimeout(() => this.performToggleTooltip(true), this.getFullOptions().delay)
-    }
+    private performActiveTooltip() {
+        this.state.inDelay = true
+        setTimeout(() => {
+            if (!this.state.inDelay) {
+                return
+            }
 
-    private performToggleTooltip(forceState?: boolean) {
-        if (!this.state.active) {
-            return
-        }
+            if (!this.state.active) {
+                return
+            }
 
-        this.toggleTooltip(forceState)
+            this.toggleTooltip(true)
 
-        if (this.isTypeFloating()) {
-            return
-        }
+            if (this.isTypeFloating()) {
+                return
+            }
 
-        this.updatePositionTooltipIfFixed()
+            this.updatePositionTooltipIfFixed()
+        }, this.getFullOptions().delay)
     }
 
     private houverOutElement() {
+        this.state.inDelay = false
         this.toggleTooltip(false)
         this.removeTooltipClassDirection()
     }
