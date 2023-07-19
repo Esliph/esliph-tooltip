@@ -2,7 +2,7 @@ import { EnumTooltipDirections, TooltipOptions, TooltipStyles } from './model.js
 
 export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     typeEnable: 'hover',
-    typePosition: 'fixed',
+    typePosition: 'float',
     fixedPosition: null,
     defaultPosition: 'right',
     classEnable: 'tooltip-enable',
@@ -11,6 +11,7 @@ export const DEFAULT_TOOLTIP_OPTIONS: TooltipOptions = {
     classTooltip: 'tooltip',
     classPosition: '',
     selectorElementTarget: '',
+    delay: 0,
     classDirectionTooltip: {
         bottom: 'tooltip-bottom',
         left: 'tooltip-left',
@@ -29,7 +30,7 @@ export const ElementTargetStylesIfTypeFixedDefault: TooltipStyles = {
 export const TooltipStylesDefault: TooltipStyles = {
     position: 'absolute',
     zIndex: '1000',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
 }
 export const TooltipStylesDisable: TooltipStyles = {
     display: 'none',

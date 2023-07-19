@@ -6,7 +6,7 @@ import {
     EnumTooltipDirections,
     PartialObjet,
     TooltipDirections,
-    TooltipOptions
+    TooltipOptions,
 } from './model.js'
 import {
     DEFAULT_TOOLTIP_OPTIONS,
@@ -67,8 +67,12 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private static getElementTarget(selectorElementTarget: string | HTMLElement | Element) {
-        if (!selectorElementTarget) { return null }
-        if (selectorElementTarget instanceof HTMLElement || selectorElementTarget instanceof Element) { return selectorElementTarget as HTMLElement }
+        if (!selectorElementTarget) {
+            return null
+        }
+        if (selectorElementTarget instanceof HTMLElement || selectorElementTarget instanceof Element) {
+            return selectorElementTarget as HTMLElement
+        }
 
         const elementTarget = document.querySelector(selectorElementTarget || '')
 
@@ -82,7 +86,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private setupElementTarget() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         Tooltip.setStylesInElement(this.elementTarget, ElementTargetStylesDefault)
 
@@ -111,7 +117,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEvents() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         if (this.options.typeEnable == 'hover') {
             this.initEventsTooltipTypeHover()
@@ -121,7 +129,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEventsTooltipTypeHover() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         this.elementTarget.addEventListener('mouseenter', () => this.hoverInElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
@@ -129,7 +139,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private initEventsTooltipTypeClick() {
-        if (!this.elementTarget) { return }
+        if (!this.elementTarget) {
+            return
+        }
 
         this.elementTarget.addEventListener('mousedown', () => this.clickElement())
         this.elementTarget.addEventListener('mouseleave', () => this.houverOutElement())
@@ -137,19 +149,23 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private clickElement() {
-        this.performToggleTooltip()
+        setTimeout(() => this.performToggleTooltip(), this.getFullOptions().delay)
     }
 
     private hoverInElement() {
-        this.performToggleTooltip(true)
+        setTimeout(() => this.performToggleTooltip(true), this.getFullOptions().delay)
     }
 
     private performToggleTooltip(forceState?: boolean) {
-        if (!this.state.active) { return }
+        if (!this.state.active) {
+            return
+        }
 
         this.toggleTooltip(forceState)
 
-        if (this.isTypeFloating()) { return }
+        if (this.isTypeFloating()) {
+            return
+        }
 
         this.updatePositionTooltipIfFixed()
     }
@@ -160,7 +176,9 @@ export class Tooltip extends ObserverTooltip {
     }
 
     private mouseMouseInElementTarget(ev: MouseEvent) {
-        if (!this.validFloatTooltip()) { return }
+        if (!this.validFloatTooltip()) {
+            return
+        }
 
         const { x, y } = this.getNewPositionTooltipTypeFloating(ev)
 
@@ -176,7 +194,9 @@ export class Tooltip extends ObserverTooltip {
 
         const stylesByDirectionTooltip = TooltipStylesFixed[newDirectionTooltip]
 
-        if (!stylesByDirectionTooltip) { return }
+        if (!stylesByDirectionTooltip) {
+            return
+        }
 
         Tooltip.setStylesInElement(this.elementTooltip, stylesByDirectionTooltip)
 
@@ -187,7 +207,9 @@ export class Tooltip extends ObserverTooltip {
         for (const directionName in TooltipDirections) {
             const classDirection = this.getFullOptions().classDirectionTooltip[directionName as EnumTooltipDirections]
 
-            if (!classDirection) { continue }
+            if (!classDirection) {
+                continue
+            }
 
             this.elementTooltip.classList.remove(classDirection)
         }
@@ -198,7 +220,9 @@ export class Tooltip extends ObserverTooltip {
 
         this.removeTooltipClassDirection()
 
-        if (!newClassDirection) { return }
+        if (!newClassDirection) {
+            return
+        }
 
         this.elementTooltip.classList.add(newClassDirection)
     }
@@ -230,7 +254,7 @@ export class Tooltip extends ObserverTooltip {
             bottom: this.validDirectionButton,
             left: this.validDirectionLeft,
             right: this.validDirectionRight,
-            top: this.validDirectionTop
+            top: this.validDirectionTop,
         }
 
         const positionElementTarget = Tooltip.getPositionElementInWindow(this.elementTarget)
@@ -246,17 +270,23 @@ export class Tooltip extends ObserverTooltip {
         let directionsValid: EnumTooltipDirections[] = []
 
         for (const directionName in TooltipDirections) {
-            if (!DIRECTION_FUNCTIONS_VALID[directionName as EnumTooltipDirections]) { continue }
+            if (!DIRECTION_FUNCTIONS_VALID[directionName as EnumTooltipDirections]) {
+                continue
+            }
 
-            if (!DIRECTION_FUNCTIONS_VALID[directionName as EnumTooltipDirections]({
-                heightElementTarget,
-                heightElementTooltip,
-                heightWindow,
-                positionElementTarget,
-                widthElementTarget,
-                widthElementTooltip,
-                widthWindow
-            })) { continue }
+            if (
+                !DIRECTION_FUNCTIONS_VALID[directionName as EnumTooltipDirections]({
+                    heightElementTarget,
+                    heightElementTooltip,
+                    heightWindow,
+                    positionElementTarget,
+                    widthElementTarget,
+                    widthElementTooltip,
+                    widthWindow,
+                })
+            ) {
+                continue
+            }
 
             directionsValid.push(directionName as EnumTooltipDirections)
         }
@@ -294,8 +324,8 @@ export class Tooltip extends ObserverTooltip {
         let position = { x: 0, y: 0 }
 
         while (element) {
-            position.x += (element.offsetLeft - element.scrollLeft + element.clientLeft)
-            position.y += (element.offsetTop - element.scrollTop + element.clientTop)
+            position.x += element.offsetLeft - element.scrollLeft + element.clientLeft
+            position.y += element.offsetTop - element.scrollTop + element.clientTop
             // @ts-expect-error
             element = element.offsetParent
         }

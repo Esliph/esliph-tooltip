@@ -42,6 +42,7 @@ export type TooltipOptions = {
     classPrefixPosition: string
     classTooltip: string
     classDirectionTooltip: { [x in EnumTooltipDirections]: string }
+    delay: number
     styles: {
         gapMouseTooltipTypeFloatingInPx: number
     }

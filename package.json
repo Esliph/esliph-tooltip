@@ -40,6 +40,6 @@
         "typescript": "^5.0.4"
     },
     "dependencies": {
-        "@esliph/util": "^1.0.1-9.21"
+        "@esliph/util-node": "^1.0.1"
     }
 }
